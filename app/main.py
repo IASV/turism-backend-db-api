@@ -1,63 +1,11 @@
 from fastapi import FastAPI, status
-from pydantic import BaseModel
-import MySQLdb
+
+from app.config.database import cursor, connection
+
+from app.models.allies import Ally
+from app.models.suscriptions import Suscription
 
 app = FastAPI()
-
-
-class Ally(BaseModel):
-    dni: str
-    full_name: str
-    phone: str
-    commerce_name: str
-    mail: str
-    commerce_type: str
-    suscription: int
-
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "dni": "123456789",
-                    "full_name": "John Doe",
-                    "phone": "555-555-5555",
-                    "commerce_name": "Example Store",
-                    "mail": "john@example.com",
-                    "commerce_type": "Retail",
-                    "suscription": 1,
-                }
-            ]
-        }
-    }
-
-
-class Suscription(BaseModel):
-    name: str
-    value: str
-    time: str
-
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "name": "normal",
-                    "value": "100,000",
-                    "time": "1 mes",
-                }
-            ]
-        }
-    }
-
-
-# Create the connection object
-connection = MySQLdb.connect(
-    host="db",
-    user="admin",
-    password="admin",
-    db="mydatabase",
-)
-# Create cursor
-cursor = connection.cursor()
 
 
 @app.get("/")
