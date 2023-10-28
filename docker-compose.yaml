@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  #MySQL Service
+  db:
+    container_name: db
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: mydatabase
+    volumes:
+      - ./sql-scripts:/docker-entrypoint-initdb.d
+
+  #API Service
+  web:
+    container_name: api
+    build: .
+    depends_on:
+      - db
+    ports:
+      - '8000:8000'
+    #command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes:
+      - .:/code
