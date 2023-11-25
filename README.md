@@ -7,6 +7,7 @@ git clone url_repository
 create containers
 ```
 docker compose -f docker-compose.yaml up
+docker restart api
 ```
 without docker, using pipenv
 ```python
